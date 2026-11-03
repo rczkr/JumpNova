@@ -18,7 +18,7 @@ whisper_model/
 *.pt
 
 # Lokale Datenbank & Uploads
-instance/*.db
+#instance/*.db
 *.sqlite3
 
 # Systemdateien
