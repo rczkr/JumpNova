@@ -3,3 +3,4 @@ Flask-SQLAlchemy
 yt-dlp
 moviepy
 demucs
+gunicorn
