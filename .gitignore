@@ -1,0 +1,26 @@
+# Python-Cache & virtuelle Umgebungen
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# IDE & Editor-Dateien
+.idea/
+.vscode/
+*.swp
+
+# Riesige Binärdateien & Modelle (Nicht für Git/GitHub)
+ffmpeg/
+whisper_model/
+*.exe
+*.pt
+
+# Lokale Datenbank & Uploads
+instance/*.db
+*.sqlite3
+
+# Systemdateien
+.DS_Store
+Thumbs.db

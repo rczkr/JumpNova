@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-8">
+
+    <div class="flex justify-between items-center bg-novaCard p-6 rounded-2xl border border-novaPink/30 shadow-xl">
+        <div>
+            <h1 class="text-3xl font-extrabold text-white">🔥 VIP Trainer Portal</h1>
+            <p class="text-gray-400 text-sm">Willkommen <span class="text-novaPink font-bold">{{ username }}</span>!</p>
+        </div>
+        <a href="{{ url_for('homeworkout') }}" class="bg-novaCyan hover:bg-novaCyan/80 text-black font-bold px-4 py-2 rounded-xl text-xs transition">
+             Zur Workout-Ansicht
+        </a>
+    </div>
+
+    <!-- FORMULAR: HAUPT-WORKOUT HOCHLADEN -->
+    <div class="bg-novaCard p-8 rounded-2xl border border-novaPink/30 shadow-xl space-y-6">
+        <h2 class="text-xl font-bold text-novaPink flex items-center gap-2">
+            <span>🎬 Neues Workout erstellen</span>
+        </h2>
+
+        <form action="{{ url_for('vip') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">Workout-Titel</label>
+                <input type="text" name="title" required placeholder="z. B. Cardio Power Explosion"
+                       class="w-full bg-novaDark border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-novaPink outline-none">
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Kategorie</label>
+                    <select name="category" class="w-full bg-novaDark border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-novaPink outline-none">
+                        <option value="Cardio">Cardio</option>
+                        <option value="Fusion">Fusion</option>
+                        <option value="Mix">Mix</option>
+                        <option value="Motivation">Motivation</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Schwierigkeit</label>
+                    <select name="schwierigkeit" class="w-full bg-novaDark border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-novaPink outline-none">
+                        <option value="Anfänger">Anfänger</option>
+                        <option value="Mittel">Mittel</option>
+                        <option value="Fortgeschritten">Fortgeschritten</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Musikstil</label>
+                    <select name="musicstyl" class="w-full bg-novaDark border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-novaPink outline-none">
+                        <option value="Pop">Pop</option>
+                        <option value="Rock">Rock</option>
+                        <option value="Radio Charts">Radio Charts</option>
+                        <option value="Remix">Remix</option>
+                        <option value="Techno">Techno</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Special Event</label>
+                    <select name="special" class="w-full bg-novaDark border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-novaPink outline-none">
+                        <option value="Standard / Ganzjährig">Standard / Ganzjährig</option>
+                        <option value="Summer-Vibes">Summer-Vibes</option>
+                        <option value="Silvester / Neujahr">Silvester / Neujahr</option>
+                        <option value="Weihnachten / Winter">Weihnachten / Winter</option>
+                        <option value="Party / Special Event">Party / Special Event</option>
+                        <option value="Ostern / Frühling">Ostern / Frühling</option>
+                        <option value="Halloween / Herbst">Halloween / Herbst</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Video (MP4, Stumm)</label>
+                    <input type="file" name="video_file" accept="video/mp4" required
+                           class="w-full bg-novaDark border border-gray-700 rounded-lg p-2 text-xs text-gray-300">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Musikspur (MP3)</label>
+                    <input type="file" name="music_file" accept="audio/mp3"
+                           class="w-full bg-novaDark border border-gray-700 rounded-lg p-2 text-xs text-gray-300">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Trainer-Sprachspur (MP3)</label>
+                    <input type="file" name="voice_file" accept="audio/mp3"
+                           class="w-full bg-novaDark border border-gray-700 rounded-lg p-2 text-xs text-gray-300">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">Songtext / Lyrics (Zeile für Zeile)</label>
+                <textarea name="lyrics" rows="3" placeholder="Songtext hier zeilenweise eingeben..."
+                          class="w-full bg-novaDark border border-gray-700 rounded-lg p-3 text-xs text-white focus:border-novaPink outline-none"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-novaPink hover:bg-novaPink/80 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-novaPink/30">
+                 Workout hochladen & speichern
+            </button>
+        </form>
+    </div>
+
+    <!-- FORMULAR: FIRE-STYLE CLIP HOCHLADEN -->
+    <div class="bg-novaCard p-8 rounded-2xl border border-amber-500/30 shadow-xl space-y-4">
+        <h2 class="text-xl font-bold text-amber-400">🔥 Neuer Fire-Style Clip erstellen</h2>
+
+        <form action="{{ url_for('vip') }}" method="POST" enctype="multipart/form-data" class="grid sm:grid-cols-3 gap-4 items-end">
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">Clip-Titel</label>
+                <input type="text" name="fire_title" placeholder="z. B. Push Harder Motivator" required
+                       class="w-full bg-novaDark border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-amber-500 outline-none">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">Fire Video (MP4)</label>
+                <input type="file" name="fire_video_file" accept="video/mp4" required
+                       class="w-full bg-novaDark border border-gray-700 rounded-lg p-1.5 text-xs text-gray-300">
+            </div>
+            <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-black font-bold py-2.5 rounded-lg text-xs transition">
+                🔥 Fire-Clip hochladen & speichern
+            </button>
+        </form>
+    </div>
+
+    <!-- LISTE: HOCHGELADENE HAUPT-WORKOUTS MIT LÖSCHEN-BUTTON -->
+    <div class="bg-novaCard p-8 rounded-2xl border border-novaCyan/30 shadow-xl space-y-4">
+        <h2 class="text-xl font-bold text-novaCyan">🎬 Hochgeladene Workouts</h2>
+
+        {% if videos %}
+        <div class="space-y-3">
+            {% for vid in videos %}
+            <div class="bg-novaDark/80 border border-gray-700 p-4 rounded-xl flex justify-between items-center">
+                <div>
+                    <span class="text-sm font-semibold text-white block">🎬 {{ vid.title }}</span>
+                    <span class="text-xs text-gray-400">Kategorie: {{ vid.category }} | Level: {{ vid.schwierigkeit }}</span>
+                </div>
+
+                <form action="/vip/delete_workout/{{ vid.id }}" method="POST" onsubmit="return confirm('Möchtest du dieses Workout und alle zugehörigen Audio/Lyrics-Dateien wirklich löschen?');">
+                    <button type="submit" class="bg-red-500/20 hover:bg-red-500/40 text-red-400 border border-red-500/40 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                         Löschen
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-400 text-xs">Noch keine Haupt-Workouts hochgeladen.</p>
+        {% endif %}
+    </div>
+
+    <!-- LISTE: HOCHGELADENE FIRE-STYLE CLIPS -->
+    <div class="bg-novaCard p-8 rounded-2xl border border-amber-500/30 shadow-xl space-y-4">
+        <h2 class="text-xl font-bold text-amber-400">🔥 Hochgeladene Fire-Clips</h2>
+
+        {% if fire_videos %}
+        <div class="space-y-3">
+            {% for fvid in fire_videos %}
+            <div class="bg-novaDark/80 border border-gray-700 p-4 rounded-xl flex justify-between items-center">
+                <div>
+                    <span class="text-sm font-semibold text-white block">🔥 {{ fvid.title }}</span>
+                    <span class="text-xs text-gray-500">Datei: {{ fvid.video_path }}</span>
+                </div>
+
+                <form action="/vip/delete_fire/{{ fvid.id }}" method="POST" onsubmit="return confirm('Möchtest du diesen Fire-Clip wirklich löschen?');">
+                    <button type="submit" class="bg-red-500/20 hover:bg-red-500/40 text-red-400 border border-red-500/40 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                        Löschen
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-400 text-xs">Noch keine Fire-Style Clips hochgeladen.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

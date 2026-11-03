@@ -1,0 +1,106 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+nav a {
+    color: #ff4081;
+    margin-right: 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+/* Container-Layout */
+.workout-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Control Panel vor/über dem Video */
+.player-controls-panel {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Videoplayer & Overlay Wrapper */
+.video-wrapper {
+    position: relative; /* Wichtig für absolute Positionierung des Overlays */
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Timer Overlay auf dem Video oben rechts */
+.video-overlay {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    pointer-events: none; /* Klicks gehen durch auf das Video */
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+/* Timer-Designs */
+.timer-standard {
+    background: rgba(0, 0, 0, 0.7);
+    color: #00ffcc;
+    border: 1px solid #00ffcc;
+}
+
+.timer-fire {
+    background: linear-gradient(45deg, #ff4500, #ff8c00);
+    color: #fff;
+    box-shadow: 0 0 10px #ff4500;
+    animation: pulse 1s infinite alternate;
+}
+
+.timer-hidden {
+    display: none;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+}
+/* Styling für synchrone Songtexte / Untertitel (auch im Vollbildmodus) */
+video::cue {
+    background-color: rgba(11, 8, 19, 0.85); /* Dunkler Hintergrund aus dem Logo */
+    color: #06B6D4;                          /* Cyan/Neon Blue Accent */
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-shadow: 0 0 10px #D946EF, 0 0 20px #D946EF; /* Neon-Pink Glow */
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+/* Hervorhebung der aktuellen Zeile */
+video::cue(b) {
+    color: #D946EF; /* Magenta/Pink für den aktiven Beat */
+}

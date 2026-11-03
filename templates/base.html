@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JumpNova - Next-Gen Jumping Fitness</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        novaDark: '#0B0813',
+                        novaCard: '#1A1528',
+                        novaPink: '#D946EF',
+                        novaCyan: '#06B6D4',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome für Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-novaDark text-white min-h-screen flex flex-col font-sans">
+
+    <!-- Navigation -->
+    <nav class="bg-novaCard/80 backdrop-blur-md border-b border-novaPink/20 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
+
+            <!-- LOGO BILD ALS NAVIGATION ZUR INDEX-SEITE -->
+            <a href="{{ url_for('index') }}" class="flex items-center hover:opacity-90 transition">
+                <img src="{{ url_for('static', filename='images/jn_text.jpg') }}" alt="JumpNova Text"
+                     class="h-10 w-auto object-contain">
+            </a>
+
+            <div class="flex items-center space-x-6">
+                <a href="{{ url_for('homeworkout') }}" class="hover:text-novaCyan transition">Workouts(Mitglieder Login)</a>
+                <a href="{{ url_for('contact_pay') }}" class="text-novaCyan hover:underline font-semibold transition">Abo & Kontakt</a>
+
+                <!-- DYNAMISCHER BENUTZER-STATUS (LOGIN / LOGOUT) -->
+                <div class="pl-4 border-l border-gray-700 flex items-center space-x-3">
+                    {% if session.get('user_id') %}
+                        {% if session.get('role') == 'trainer' %}
+                            <a href="{{ url_for('vip') }}" class="hover:text-novaPink transition font-semibold text-novaPink text-xs border border-novaPink/40 px-3 py-1 rounded-full">VIP Trainer Portal</a>
+                        {% endif %}
+                        <span class="text-xs text-gray-400">Hallo <strong class="text-novaCyan">{{ session.get('username') }}</strong>
+                        <a href="{{ url_for('logout') }}" class="inline-flex items-center gap-2 bg-red-500/20 hover:bg-red-500/40 text-red-400 border border-red-500/30 px-3 py-1 rounded-full text-xs font-bold transition">
+                            <span>【﻿⏻】abmelden</span>
+                        </a>
+                    {% else %}
+
+                        <a href="{{ url_for('login') }}" class="text-sm text-novaPink hover:underline border-l border-gray-700 pl-4 py-1 font-semibold">
+                            VIP Trainer Login
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- SPRACHAUSWAHL GANZ RECHTS (DE, EN, CS, HU) -->
+                <div class="flex items-center gap-3 px-3 py-1.5 rounded-lg bg-novaDark border border-gray-700 ml-2">
+                    <!-- Unsichtbarer Google Translate Container -->
+                    <div id="google_translate_element" style="display:none;"></div>
+
+                    <button onclick="changeLanguage('de')" title="Deutsch"
+                            class="hover:scale-125 transition-transform cursor-pointer flex items-center">
+                        <img src="https://flagcdn.com/w20/de.png" alt="Deutsch" class="w-5 h-auto rounded-sm">
+                    </button>
+                    <button onclick="changeLanguage('en')" title="English"
+                            class="hover:scale-125 transition-transform cursor-pointer flex items-center">
+                        <img src="https://flagcdn.com/w20/gb.png" alt="English" class="w-5 h-auto rounded-sm">
+                    </button>
+                    <button onclick="changeLanguage('cs')" title="Čeština"
+                            class="hover:scale-125 transition-transform cursor-pointer flex items-center">
+                        <img src="https://flagcdn.com/w20/cz.png" alt="Čeština" class="w-5 h-auto rounded-sm">
+                    </button>
+                    <button onclick="changeLanguage('hu')" title="Magyar"
+                            class="hover:scale-125 transition-transform cursor-pointer flex items-center">
+                        <img src="https://flagcdn.com/w20/hu.png" alt="Magyar" class="w-5 h-auto rounded-sm">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hauptinhalt -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full">
+
+        <!-- FLASK FLASH-MELDUNGEN (BANNER) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="space-y-3 mb-6">
+                    {% for category, message in messages %}
+                        <div class="p-4 rounded-xl text-sm font-semibold flex items-center justify-between border shadow-lg transition-all
+                            {% if category == 'error' %} bg-red-500/20 text-red-300 border-red-500/40
+                            {% elif category == 'success' %} bg-emerald-500/20 text-emerald-300 border-emerald-500/40
+                            {% else %} bg-novaCyan/20 text-novaCyan border-novaCyan/40 {% endif %}">
+                            <span>{{ message }}</span>
+                            <button onclick="this.parentElement.remove()" class="text-xs opacity-70 hover:opacity-100 ml-4 font-bold cursor-pointer">✕</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-novaCard border-t border-novaPink/10 py-6 text-center text-gray-400 text-sm space-y-2">
+        <p>&copy; 2026 Jumpnova – IHK Abschlussprojekt. Alle Rechte vorbehalten.</p>
+        <div class="flex justify-center gap-4 text-xs">
+            <a href="{{ url_for('impressum') }}" class="hover:text-novaCyan transition underline">Impressum</a>
+            <span class="text-gray-600">|</span>
+            <a href="{{ url_for('datenschutz') }}" class="hover:text-novaPink transition underline">Datenschutz</a>
+        </div>
+    </footer>
+
+    <!-- GOOGLE TRANSLATE SKRIPT & LOGIK -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'de',
+                includedLanguages: 'de,en,cs,hu',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        function changeLanguage(langCode) {
+            var select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = langCode;
+                select.dispatchEvent(new Event('change'));
+            }
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- PLAYER.JS EINGEBUNDEN -->
+    <script src="{{ url_for('static', filename='js/player.js') }}"></script>
+</body>
+</html>

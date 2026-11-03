@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="space-y-16 py-8">
+
+    <!-- HERO SECTION -->
+    <div class="grid md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto">
+
+        <!-- LOGO LINKS -->
+        <div class="flex justify-center md:justify-start">
+            <img src="{{ url_for('static', filename='images/jn_logo4.jpg') }}" alt="JumpNova Hero Logo"
+                 class="w-80 md:w-full max-w-md h-auto object-contain hover:scale-105 transition duration-500">
+        </div>
+
+        <!-- RECHTER CONTENT BEREICH -->
+        <div class="text-center md:text-left space-y-6">
+
+    <!-- FARBIGER HEADING-TEXT GENAU WIE IM BILD-VERLAUF -->
+<h1 class="text-4xl md:text-6xl font-black tracking-tight leading-tight">
+    <span class="bg-gradient-to-r from-white via-purple-400 via-indigo-500 via-blue-500 to-novaCyan bg-clip-text text-transparent">
+        Dein Workout, <br>
+        Dein Rhythm, <br>
+        Deine Rules!
+    </span>
+</h1>
+            <p class="text-gray-300 text-base md:text-lg leading-relaxed">
+               Trainiere genau so, wie du es brauchst: Schalte den Trainer leise, sobald du die Choreo beherrschst, drehe die Musik voll auf und lass dich von synchronen Live-Lyrics und deinen eigenen Playlists pushen!
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- FEATURE HIGHLIGHT CARDS (4er GRID) -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Feature 1: Dual Audio -->
+        <div class="bg-novaCard p-6 rounded-2xl border border-novaPink/20 hover:border-novaPink/50 transition space-y-3 shadow-xl">
+            <div class="w-12 h-12 rounded-xl bg-novaPink/20 flex items-center justify-center text-novaPink text-2xl font-bold">
+                🎶
+            </div>
+            <h3 class="text-lg font-bold text-white">Dual Audio Control</h3>
+            <p class="text-gray-400 text-xs leading-relaxed">
+                Passe Musik und Trainer-Stimme unabhängig voneinander an. Drehe den Sound voll auf, sobald du die Steps kennst, und springe völlig frei im Rhythmus!
+            </p>
+        </div>
+
+        <!-- Feature 2: Live Lyrics & Sprachen -->
+        <div class="bg-novaCard p-6 rounded-2xl border border-novaCyan/20 hover:border-novaCyan/50 transition space-y-3 shadow-xl">
+            <div class="w-12 h-12 rounded-xl bg-novaCyan/20 flex items-center justify-center text-novaCyan text-2xl font-bold">
+                🎤
+            </div>
+            <h3 class="text-lg font-bold text-white">Live-Lyrics</h3>
+            <p class="text-gray-400 text-xs leading-relaxed">
+                Synchrone Songtexte direkt im Player! Singe während des Springens deine Lieblingssongs mit, nutze Fremdsprachen zu lernen oder wirf einfach einen Blick ins Songtext-Kästchen, um den Song zu übersetzen und zu verstehen.
+            </p>
+        </div>
+
+        <!-- Feature 3: Smartes Filtern & Specials -->
+        <div class="bg-novaCard p-6 rounded-2xl border border-amber-500/20 hover:border-amber-500/50 transition space-y-3 shadow-xl">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 text-2xl font-bold">
+                🔍
+            </div>
+            <h3 class="text-lg font-bold text-white">Special Filters</h3>
+            <p class="text-gray-400 text-xs leading-relaxed">
+                Finde sofort, worauf du Lust hast. Lust auf sommerliche Vibes mitten im Winter oder weihnachtliche Santa-Beats im Hochsommer? Ein Klick reicht!
+            </p>
+        </div>
+
+        <!-- Feature 4: Eigene Mixes -->
+        <div class="bg-novaCard p-6 rounded-2xl border border-purple-500/20 hover:border-purple-500/50 transition space-y-3 shadow-xl">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 text-2xl font-bold">
+                🧩
+            </div>
+            <h3 class="text-lg font-bold text-white">Eigene Workout-Mixe</h3>
+            <p class="text-gray-400 text-xs leading-relaxed">
+                Stelle deine eigenen Trainings-Sessions zusammen! Kombiniere deine Lieblings-Workouts zu individuellen Playlists!
+            </p>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-12">
+
+    <!-- WICHTIGER IHK-HINWEIS BANNER -->
+    <div class="bg-amber-500/10 border border-amber-500/40 p-4 rounded-2xl flex items-center gap-4 text-xs">
+        <span class="text-xs">⚠️</span>
+        <div>
+            <h2 class="font-bold">IHK-Prüfungsprojekt Demonstration</h2>
+            <p class="text-xs text-amber-300/80">
+                Diese Zahlungs- und Kontaktfunktion dient ausschließlich zu Demonstrationszwecken, es werden keine echten Transaktionen oder Nachrichten versendet.
+            </p>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+        <!-- VIP Abonnements / Testkauf -->
+        <div class="bg-novaCard p-8 rounded-2xl border border-novaCyan/30 space-y-6">
+            <h2 class="text-2xl font-extrabold text-novaCyan">JumpNova VIP Pass</h2>
+            <p class="text-gray-400 text-sm">Erhalte Zugriff auf alle exklusiven Trainer-Workouts </p>
+
+            <div class="text-4xl font-black text-white">
+                9,99 € <span class="text-sm font-normal text-gray-400">/ Monat</span>
+            </div>
+
+            <form action="{{ url_for('contact_pay') }}" method="POST" class="space-y-4">
+                <input type="hidden" name="form_type" value="payment">
+                <input type="text" name="holder" placeholder="Karteninhaber (z.B. Max Mustermann)" required class="w-full bg-novaDark border border-gray-700 rounded-xl p-3 text-white focus:border-novaCyan outline-none">
+                <input type="text" name="card_no" placeholder="IBAN / KK-Nummer (TEST: DE00 1234...)" required class="w-full bg-novaDark border border-gray-700 rounded-xl p-3 text-white focus:border-novaCyan outline-none">
+
+                <button type="submit" class="w-full bg-novaCyan hover:bg-novaCyan/80 text-black font-extrabold py-3 rounded-xl transition cursor-pointer">
+                    Testzahlung simulieren
+                </button>
+            </form>
+        </div>
+
+        <!-- Kontaktformular -->
+        <div class="bg-novaCard p-8 rounded-2xl border border-novaPink/30 space-y-6">
+            <h2 class="text-2xl font-extrabold text-novaPink">Kontakt aufnehmen</h2>
+            <p class="text-gray-400 text-sm">Fragen zum Abo, Support oder einfach ein kurzes Hallo? Schreib uns!</p>
+
+            <form action="{{ url_for('contact_pay') }}" method="POST" class="space-y-4">
+                <input type="hidden" name="form_type" value="contact">
+                <input type="text" name="name" placeholder="Dein Name" required class="w-full bg-novaDark border border-gray-700 rounded-xl p-3 text-white focus:border-novaPink outline-none">
+                <input type="email" name="email" placeholder="Deine E-Mail" required class="w-full bg-novaDark border border-gray-700 rounded-xl p-3 text-white focus:border-novaPink outline-none">
+                <textarea name="message" rows="3" placeholder="Deine Nachricht..." required class="w-full bg-novaDark border border-gray-700 rounded-xl p-3 text-white focus:border-novaPink outline-none"></textarea>
+
+                <button type="submit" class="w-full bg-novaPink hover:bg-novaPink/80 text-white font-bold py-3 rounded-xl transition cursor-pointer">
+                    Nachricht senden
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

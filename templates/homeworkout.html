@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- FILTER-BEREICH -->
+<div class="bg-novaCard p-4 rounded-2xl border border-novaCyan/30 mb-8">
+    <form method="GET" action="{{ url_for('homeworkout') }}" class="grid grid-cols-2 md:grid-cols-5 gap-3 items-end">
+        <div>
+            <label class="block text-xs text-gray-400 mb-1">Kategorie</label>
+            <select name="category" class="w-full bg-novaDark border border-gray-700 rounded-lg p-2 text-xs text-white outline-none focus:border-novaCyan">
+                <option value="Alle">Alle Kategorien</option>
+                <option value="Cardio">Cardio</option>
+                <option value="Fusion">Fusion</option>
+                <option value="Mix">Mix</option>
+                <option value="Motivation">Motivation</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-xs text-gray-400 mb-1">Schwierigkeit</label>
+            <select name="schwierigkeit" class="w-full bg-novaDark border border-gray-700 rounded-lg p-2 text-xs text-white outline-none focus:border-novaCyan">
+                <option value="Alle">Alle Level</option>
+                <option value="Anfänger">Anfänger</option>
+                <option value="Mittel">Mittel</option>
+                <option value="Fortgeschritten">Fortgeschritten</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-xs text-gray-400 mb-1">Musikstil</label>
+            <select name="musicstyl" class="w-full bg-novaDark border border-gray-700 rounded-lg p-2 text-xs text-white outline-none focus:border-novaCyan">
+                <option value="Alle">Alle Stile</option>
+                <option value="Pop">Pop</option>
+                <option value="Rock">Rock</option>
+                <option value="Radio Charts">Radio Charts</option>
+                <option value="Remix">Remix</option>
+                <option value="Techno">Techno</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-xs text-gray-400 mb-1">Special / Event</label>
+            <select name="special" class="w-full bg-novaDark border border-gray-700 rounded-lg p-2 text-xs text-white outline-none focus:border-novaCyan">
+                <option value="Alle">Alle Events</option>
+                <option value="Halloween / Herbst">Halloween / Herbst</option>
+                <option value="Ostern / Frühling">Ostern / Frühling</option>
+                <option value="Party / Special Event">Party / Special Event</option>
+                <option value="Silvester / Neujahr">Silvester / Neujahr</option>
+                <option value="Sommer / Summer-Vibes">Sommer / Summer-Vibes</option>
+                <option value="Standard / Ganzjährig">Standard / Ganzjährig</option>
+                <option value="Weihnachten / Winter">Weihnachten / Winter</option>
+            </select>
+        </div>
+
+        <div class="col-span-2 md:col-span-1 flex gap-2">
+            <button type="submit" class="w-full bg-novaCyan hover:bg-novaCyan/80 text-black font-bold py-2 rounded-lg text-xs transition">
+                🔍 Filtern
+            </button>
+            <a href="{{ url_for('homeworkout') }}" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded-lg text-xs flex items-center justify-center transition">
+                ❌
+            </a>
+        </div>
+    </form>
+</div>
+
+{% if active_video %}
+<div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+        <h1 id="activeVideoTitle" class="text-3xl font-extrabold text-white">{{ active_video.title }}</h1>
+        <p class="text-gray-400 text-sm">Kategorie: <span id="activeVideoCategory" class="text-novaCyan">{{ active_video.category }}</span></p>
+    </div>
+    <button id="quickApplyBtn" class="bg-novaCard border border-novaCyan/50 text-novaCyan hover:bg-novaCyan/10 px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition">
+        <span>✅ Quick-Apply (Vorherige Einstellungen)</span>
+    </button>
+</div>
+
+<!-- Player & Controls Grid -->
+<div class="grid lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 space-y-6">
+
+        <!-- Video Container -->
+        <div class="relative bg-black rounded-2xl overflow-hidden border border-novaPink/30 shadow-2xl">
+            <video id="workoutVideo" controls class="w-full aspect-video object-cover">
+                <source id="videoSource" src="{{ url_for('static', filename=active_video.video_path) }}" type="video/mp4">
+
+                <track id="lyricsTrack" kind="subtitles" label="Lyrics" srclang="de"
+                       src="{{ url_for('static', filename='uploads/lyrics_' ~ active_video.id ~ '.vtt') }}" default>
+                Dein Browser unterstützt kein MP4-Video.
+            </video>
+
+            <!-- Timer Overlay oben rechts -->
+            <div id="timerOverlay" class="video-overlay timer-standard">
+                ⏱️ <span id="timerDisplay">00:00</span>
+            </div>
+
+            <!-- Fire Style Overlay Video oben rechts & rund -->
+            <video id="fireOverlayVideo" class="absolute top-4 right-4 w-32 h-32 object-cover rounded-full border-2 border-amber-500 shadow-lg shadow-amber-500/50 hidden z-20 pointer-events-none">
+                <source id="fireVideoSource" src="" type="video/mp4">
+            </video>
+        </div>
+
+        <!-- Pre-Video Konfigurationsleiste -->
+        <div class="bg-novaCard p-6 rounded-2xl border border-novaPink/20 space-y-4">
+            <h3 class="text-lg font-bold text-novaPink">⚙️ Workout-Einstellungen</h3>
+            <div class="grid sm:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Timer-Style</label>
+                    <select id="timerSelect" class="w-full bg-novaDark border border-gray-700 rounded-lg p-2.5 text-sm text-white focus:border-novaCyan outline-none">
+                        <option value="standard">⏱️Standard Timer </option>
+                        <option value="fire">🔥Fire Style </option>
+                        <option value="hidden">🚫Timer Deaktivieren</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Fire-Style Motivator Clip</label>
+                    <select id="fireStyleSelect" class="w-full bg-novaDark border border-amber-500/50 rounded-lg p-2.5 text-sm text-white focus:border-amber-500 outline-none">
+                        <option value="none">Kein Clip</option>
+                        {% for fvid in fire_videos %}
+                        <option value="{{ url_for('static', filename=fvid.video_path) }}">🔥 {{ fvid.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Songtext</label>
+                    <select id="lyricsToggleSelect" class="w-full bg-novaDark border border-novaCyan/50 rounded-lg p-2.5 text-sm text-white focus:border-novaCyan outline-none">
+                        <option value="showing">🎤 Songtext einblenden</option>
+                        <option value="disabled">🚫 Songtext ausschalten</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dual Audio Controls -->
+        <div class="bg-novaCard p-6 rounded-2xl border border-novaPink/20 space-y-4">
+            <h3 class="text-lg font-bold flex items-center gap-2">
+                <span> 🎶 Dual Audio Regler</span>
+            </h3>
+
+            <div class="grid sm:grid-cols-2 gap-6">
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-gray-300">🎵 Musik-Lautstärke</span>
+                    </div>
+                    <input type="range" id="musicVol" min="0" max="1" step="0.05" value="1" class="w-full accent-novaCyan cursor-pointer">
+                    <audio id="musicAudio" src="{% if active_video.music_path %}{{ url_for('static', filename=active_video.music_path) }}{% endif %}"></audio>
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-gray-300">🎙️ Trainer-Stimme</span>
+                    </div>
+                    <input type="range" id="trainerVol" min="0" max="1" step="0.05" value="0.8" class="w-full accent-novaPink cursor-pointer">
+                    <audio id="trainerAudio" src="{% if active_video.voice_path %}{{ url_for('static', filename=active_video.voice_path) }}{% endif %}"></audio>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Rechte Spalte: Live Lyrics, Workouts & MIX ERSTELLEN -->
+    <div class="space-y-6">
+        <div class="bg-novaCard p-6 rounded-2xl border border-novaCyan/20 h-64 flex flex-col">
+            <h3 class="text-lg font-bold text-novaCyan mb-2">🎤 Songtext</h3>
+            <div id="lyricsContainer" class="flex-grow overflow-y-auto text-gray-300 text-sm whitespace-pre-line leading-relaxed">
+                {{ active_video.lyrics or 'Keine Songtexte für dieses Video hinterlegt.' }}
+            </div>
+        </div>
+
+        <!-- GESPEICHERTE MIXES -->
+        {% if user_mixes %}
+        <div class="bg-novaCard p-6 rounded-2xl border border-amber-500/30 space-y-3">
+            <h3 class="text-lg font-bold text-amber-400">🎶 Meine gespeicherten Mixes</h3>
+            <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                {% for mix in user_mixes %}
+                <div class="bg-novaDark/80 p-3 rounded-xl border border-gray-700 flex justify-between items-center">
+                    <div>
+                        <div class="font-bold text-sm text-white">{{ mix.title }}</div>
+                        <div class="text-xs text-gray-400">{{ mix.mix_videos|length }} Workouts</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="startMixPlaylist({{ mix.id }})" class="bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-lg text-xs font-bold transition">
+                            ▶️
+                        </button>
+                        <form action="/mix/delete/{{ mix.id }}" method="POST" onsubmit="return confirm('Mix löschen?');">
+                            <button type="submit" class="bg-red-500/20 hover:bg-red-500/40 text-red-400 border border-red-500/40 px-2 py-1 rounded-lg text-xs transition">
+                                🗑
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- FORMULAR: NEUEN MIX ERSTELLEN -->
+        <div class="bg-novaCard p-6 rounded-2xl border border-purple-500/20 space-y-3">
+            <h3 class="text-lg font-bold text-purple-400">Mix Ersteller</h3>
+
+            <form action="/mix/create" method="POST" class="space-y-3">
+                <div class="flex gap-2">
+                    <input type="text" name="mix_title" placeholder="Mix Name (z. B. 15-Min-Power)" required
+                           class="w-full bg-novaDark border border-gray-700 rounded-lg p-2 text-xs text-white outline-none focus:border-purple-400">
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-3 py-2 rounded-lg text-xs transition whitespace-nowrap">
+                        Mix Speichern
+                    </button>
+                </div>
+
+                <div class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                    {% for vid in videos %}
+                    <div class="p-3 rounded-xl border transition flex items-center justify-between {% if vid.id == active_video.id %}bg-novaPink/20 border-novaPink text-white{% else %}bg-novaDark/60 border-gray-700 text-gray-300 hover:border-novaCyan{% endif %}">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" name="video_ids" value="{{ vid.id }}" class="w-4 h-4 accent-purple-500 cursor-pointer">
+                            <a href="/homeworkout/{{ vid.id }}" class="block">
+                                <div class="font-bold text-sm">{{ vid.title }}</div>
+                                <div class="text-xs text-gray-400">{{ vid.category }}</div>
+                            </a>
+                        </div>
+                        {% if vid.id == active_video.id %}
+                        <span class="text-xs bg-novaPink px-2 py-0.5 rounded-full font-bold">Aktiv</span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="text-center py-20">
+    <h2 class="text-2xl font-bold text-gray-300">Noch keine Workouts vorhanden.</h2>
+    <p class="text-gray-500 mt-2">Gehe zur <a href="/vip" class="text-novaPink underline">VIP Trainer Seite</a>, um das erste Video hochzuladen.</p>
+</div>
+{% endif %}
+{% endblock %}
