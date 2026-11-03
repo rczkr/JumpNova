@@ -1,4 +1,4 @@
-# 🚴‍♀️ JumpNova – Interactive Jumping Fitness Platform
+#  JumpNova – Interactive Jumping Fitness Platform
 
 Eine moderne Web-Anwendung für interaktive Jumping-Fitness-Workouts mit automatisierter Video-Verarbeitungs-Pipeline, getrennter Audio-Steuerung (Dual Audio) und synchronem Songtext-Player.
 
